@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="MauiAppMinhasCompras.Views.ListaProduto"
+             Appearing="ListaProduto_Appearing">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Adicionar" Clicked="ToolbarItem_Clicked" />
+        <ToolbarItem Text="Somar" Clicked="SomarButton_Clicked" />
+    </ContentPage.ToolbarItems>
+
+    <VerticalStackLayout>
+        <Label Text="Minhas Compras" FontSize="24" HorizontalOptions="Center" />
+
+        <!-- Barra de Pesquisa -->
+        <SearchBar x:Name="searchBar" Placeholder="Buscar produto..." TextChanged="SearchBar_TextChanged" />
+
+        <!-- Picker para selecionar a categoria -->
+        <Picker x:Name="categoriaPicker" Title="Selecione a Categoria" SelectedIndexChanged="CategoriaPicker_SelectedIndexChanged">
+            <!-- Itens do Picker são preenchidos dinamicamente -->
+        </Picker>
+
+        <Grid Padding="10" RowSpacing="1" ColumnSpacing="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <!-- Coluna para a Categoria -->
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Cabeçalho da Tabela -->
+            <Label Text="ID" FontAttributes="Bold" HorizontalOptions="Center" Grid.Row="0" Grid.Column="0" />
+            <Label Text="Produto" FontAttributes="Bold" HorizontalOptions="Center" Grid.Row="0" Grid.Column="1" />
+            <Label Text="Categoria" FontAttributes="Bold" HorizontalOptions="Center" Grid.Row="0" Grid.Column="2" />
+            <Label Text="Quantidade" FontAttributes="Bold" HorizontalOptions="Center" Grid.Row="0" Grid.Column="3" />
+            <Label Text="Preço" FontAttributes="Bold" HorizontalOptions="Center" Grid.Row="0" Grid.Column="4" />
+            <Label Text="Ações" FontAttributes="Bold" HorizontalOptions="Center" Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="2" />
+
+            <!-- Lista de Produtos -->
+            <CollectionView x:Name="listaProdutosView" SelectionMode="Single" SelectionChanged="OnItemSelected" Grid.Row="1" Grid.ColumnSpan="6">
+                <CollectionView.ItemsSource>
+                    <Binding Path="produtosFiltrados" />
+                </CollectionView.ItemsSource>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10" ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <!-- Coluna para a Categoria -->
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Exibição dos Dados -->
+                            <Label Text="{Binding Id}" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="0" />
+                            <Label Text="{Binding Descricao}" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1" />
+                            <Label Text="{Binding Categoria}" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="2" />
+                            <Label Text="{Binding Quantidade}" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="3" />
+                            <Label Text="{Binding Preco, StringFormat='R$ {0:F2}'}" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="4" />
+
+                            <!-- Botão Editar -->
+                            <Button Text="✏️" BackgroundColor="Blue" TextColor="White" Clicked="EditButton_Clicked" CommandParameter="{Binding Id}" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="5" WidthRequest="30" HeightRequest="30"/>
+
+                            <!-- Botão Excluir -->
+                            <Button Text="🗑" BackgroundColor="Red" TextColor="White" Clicked="DeleteButton_Clicked" CommandParameter="{Binding Id}" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="6" WidthRequest="30" HeightRequest="30"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>
